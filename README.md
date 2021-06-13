@@ -1,5 +1,6 @@
 # Shakepay Net Worth Calculator
 * Visit the prototype at [this link](https://shakepay-is-fab.netlify.app)
+* June 13th 14:40 PST: For the app to function correctly, it will be necessary to install [Chrome extension](https://chrome.google.com/webstore/detail/moesif-origin-cors-change/digfbfaphojjndkpccljibejjbppifbc) to overcome the CORS issues with API calls while using the app. Building a custom proxy in Express was on the to-do list but unfortunately was not implemented due to time constraints.
 
 ## Running Code Locally In Development
 * Firstly, clone this github repo to your hard-drive.
