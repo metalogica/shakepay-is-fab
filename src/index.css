@@ -36,7 +36,9 @@ html {
 }
 
 body {
+  background-image: linear-gradient(120deg, var(--color-primary-lighter-1), var(--color-primary-lighter-2));
   font-size: var(--font-size-medium);
+  padding:0;
   margin: 0;
   font-family: 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',

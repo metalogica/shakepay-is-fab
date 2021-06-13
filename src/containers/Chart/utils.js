@@ -22,6 +22,9 @@ export const getNetworthSeries = async () => {
     if (index< 80) {
       const change = calculateChange(tx, fxRates.data);
       netWorth += change;
+
+      // This is a tremporary UI workaround. The calculateChange() is producing errors.
+      netWorth = netWorth < 0 ? 0 : netWorth;
   
       const date = moment(tx.createdAt).format('MMM D');
       labels.push(date);

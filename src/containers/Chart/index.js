@@ -25,7 +25,7 @@ function ChartWrapper() {
       { !error && data && (
         <ReactFrappeChart
           type="line"
-          colors={["#21ba45"]}
+          colors={["#0894EB"]}
           height={700}
           axisOptions={{ xAxisMode: "tick", yAxisMode: "tick", xIsSeries: 1 }}
           data={data}
