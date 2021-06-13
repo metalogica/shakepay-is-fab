@@ -8,3 +8,4 @@
 * To run the app in your local browser, use the command `yarn start`. 
 * We're using `react-app-rewired` for faster [Hot Module Replacement](https://webpack.js.org/guides/hot-module-replacement/)🚀🚀🚀🚀🚀
 * To lint the code, run `yarn lint`. Keep it nice and tidy. 
+* To execute the test suite, run `yarn test`. 🤖
