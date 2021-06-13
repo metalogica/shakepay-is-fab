@@ -7,7 +7,7 @@
   color: var(--color-grey-dark-3);
   border: .3rem solid red;
   
-  background-image: radial-gradient(var(--color-tertiary-light), var(--color-tertiary-dark));
+  background-image: linear-gradient(120deg, var(--color-primary-lighter-1), var(--color-primary-lighter-2));
 }
 
 .chart-wrapper {

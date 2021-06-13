@@ -6,6 +6,7 @@ import ChartWrapper from './containers/Chart';
 function App() {
   return (
     <div className="app">
+      <h2>Net Worth Calculator</h2>
       <ChartWrapper/>
     </div>
   );

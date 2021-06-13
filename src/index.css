@@ -5,6 +5,8 @@ html {
   box-sizing: border-box;
 
   --color-primary-light: #83CDFF;
+  --color-primary-lighter-1: #83cdff17;
+  --color-primary-lighter-2: #83cdff05;
   --color-primary-dark: #0894EB;
   
   --color-secondary-light: #FFC75F;
