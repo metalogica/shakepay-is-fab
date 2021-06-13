@@ -1,8 +1,41 @@
+import axios from 'axios';
+import moment from 'moment';
+
+export const getNetworthSeries = async () => {
+  // make api call for fx rates
+  const ratesConfig = { method: 'GET', url: 'https://api.shakepay.co/rates' };
+  const fxRates = await axios(ratesConfig);
+  
+  // make api call for tx history
+  const txHistoryConfig = { method: 'GET', url: 'https://shakepay.github.io/programming-exercise/web/transaction_history.json' };
+  const txHistory = await axios(txHistoryConfig);
+
+  // init data structure for Chart
+  const labels = [];
+  const datasets = [ { values: [] } ];
+
+  // loop through txHistory and calculate net-worth
+  let netWorth = 0.0;
+  txHistory.data.forEach(tx => {
+    const change = calculateChange(tx, fxRates.data);
+    netWorth += change;
+
+    const date = moment(tx.createdAt).format('MMM D');
+    labels.push(date);
+    datasets[0].values.push(netWorth);
+  });
+
+  return {
+    labels,
+    datasets
+  };
+};
+
 export const calculateChange = (tx, fxRates) => {
   const { from, to } = tx;
 
   if (tx.type === 'conversion') {
-    console.dir(tx);
+    // console.dir(tx);
     //    BTC_CAD
     const fromAtoB= `${from.currency}_${to.currency}`;
     // console.log('from btc to cad: ', fromAtoB);

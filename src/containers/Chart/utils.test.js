@@ -1,24 +1,22 @@
 import { ratesStub } from './stubs.js';
-import { calculateChange } from './utils';
+import { calculateChange, getNetworthSeries } from './utils';
 
-xdescribe('getNetworthSeries(', () => {
-  xit('should return the correct shape', () => {
+describe('getNetworthSeries(', () => {
+  it('should return the correct shape', () => {
     const stub = {
       labels: ['d1', 'd2', 'd3'],
       datasets: [{ values: [43, 55, 66, 80, 77]}]
     };
 
-    const networthSeries = getNetworthSeries();
-
     expect(
       Object.keys(stub)
     ).toEqual(
-      Object.keys(networthSeries)
+      Object.keys(getNetworthSeries)
     );
   });
 });
 
-describe('calculateChange(tx: Object)', () => {
+xdescribe('calculateChange(tx: Object)', () => {
   it('should calculate CAD credit correctly', () => {
     const tx = {
       "createdAt": "2020-04-20T15:49:57.741Z",
