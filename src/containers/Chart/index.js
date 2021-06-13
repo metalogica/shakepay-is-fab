@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
 import ReactFrappeChart from "react-frappe-charts";
 import { getNetworthSeries } from './utils';
-import Logo from '../../logo.svg';
 
 function ChartWrapper() {  
   const [ data, setData ] = useState(false);
   const [ error, setError ] = useState(false);
   
-  getNetworthSeries()
-    .then(response => setData(response))
+  !data && getNetworthSeries()
+    .then(response => { 
+      console.log(response);
+      setData(response); 
+    })
     .catch(error => setError(true));
 
   return (
     <div className="chart-wrapper">
       {/* Error State */}
       { error && "There was an error with the API request." }
+
       {/*  Loading State */}
-      { error && !data && <Logo/>}
+      { !error && !data && "Loading..."}
+
       {/* Rendered State */}
       { !error && data && (
         <ReactFrappeChart

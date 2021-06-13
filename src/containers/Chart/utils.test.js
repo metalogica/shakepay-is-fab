@@ -1,8 +1,8 @@
 import { ratesStub } from './stubs.js';
 import { calculateChange, getNetworthSeries } from './utils';
 
-describe('getNetworthSeries(', () => {
-  it('should return the correct shape', () => {
+xdescribe('getNetworthSeries(', () => {
+  xit('should return the correct shape', () => {
     const stub = {
       labels: ['d1', 'd2', 'd3'],
       datasets: [{ values: [43, 55, 66, 80, 77]}]
@@ -14,9 +14,12 @@ describe('getNetworthSeries(', () => {
       Object.keys(getNetworthSeries)
     );
   });
+
+  xit('should allow a customer to filter date range', () => {
+  });
 });
 
-xdescribe('calculateChange(tx: Object)', () => {
+describe('calculateChange(tx: Object)', () => {
   it('should calculate CAD credit correctly', () => {
     const tx = {
       "createdAt": "2020-04-20T15:49:57.741Z",
@@ -140,6 +143,7 @@ xdescribe('calculateChange(tx: Object)', () => {
     expect(change).toEqual(actualChange);
   });
 
+  // TODO: There is an arithmetic error in thie part of the code for calculations; it needs proof-checking.
   it('should calculate CAD-ETH conversion correctly', () => {
     const tx = {
       "createdAt": "2020-01-31T18:36:43.459Z",

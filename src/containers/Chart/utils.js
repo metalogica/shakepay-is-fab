@@ -16,13 +16,17 @@ export const getNetworthSeries = async () => {
 
   // loop through txHistory and calculate net-worth
   let netWorth = 0.0;
-  txHistory.data.forEach(tx => {
-    const change = calculateChange(tx, fxRates.data);
-    netWorth += change;
-
-    const date = moment(tx.createdAt).format('MMM D');
-    labels.push(date);
-    datasets[0].values.push(netWorth);
+  txHistory.data.forEach((tx, index) => {
+    // TODO: There is an error in the networth calculator on CONVERSIONS that disrupts the visualisation of the data.
+    // Issue can be found in utils.test.js
+    if (index< 80) {
+      const change = calculateChange(tx, fxRates.data);
+      netWorth += change;
+  
+      const date = moment(tx.createdAt).format('MMM D');
+      labels.push(date);
+      datasets[0].values.push(netWorth);
+    }
   });
 
   return {
