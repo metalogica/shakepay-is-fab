@@ -1,5 +1,7 @@
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { hot } from 'react-hot-loader';
 
 function App() {
   return (
@@ -15,11 +17,11 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Learn React!!!
         </a>
       </header>
     </div>
   );
 }
 
-export default App;
+export default hot(module)(App);
