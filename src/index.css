@@ -1,3 +1,5 @@
+/* Base styles */
+
 html {
   font-size: 62.5%;
   box-sizing: border-box;
@@ -8,8 +10,8 @@ html {
   --color-secondary-light: #FFC75F;
   --color-secondary-dark: #EB8C12;
   
-  --color-tertiary-light: #BB80FF;
-  --color-tertiary-dark: #E0C5FF;
+  --color-tertiary-light: #e0c5ff0f;
+  --color-tertiary-dark: #bb80ff2e;
 
   --color-white: #fff;
   --color-black: #000;
