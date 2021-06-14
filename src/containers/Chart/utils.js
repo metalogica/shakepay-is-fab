@@ -70,7 +70,7 @@ export const transactionsOccuredOnSameDay = (tx1, tx2) => {
   return moment(day1).format('L') === moment(day2).format('L');
 };
 
-export const getFxRateByDate = (txDate, currencyPair, historicalRatesArray, spotRatesArray) => {
+export const getFxRateByDate = ({txDate, currencyPair, historicalRatesArray, spotRatesArray}) => {
   if (currencyPair === 'CAD_CAD') return 1.0;
 
   // check if the historical rate exists for given date range
