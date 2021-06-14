@@ -7,9 +7,11 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
+    "express": "^4.17.1",
     "express-http-proxy": "^1.6.2",
     "frappe-charts": "^1.6.1",
     "moment": "^2.29.1",
+    "nodemon": "^2.0.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-frappe-charts": "^4.0.0",
@@ -17,11 +19,12 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-scripts build",
-    "deploy": "netlify deploy -d build --prod",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "backend:start": "nodemon ./proxyServer.js",
+    "frontend:start": "react-app-rewired start",
+    "frontend:build": "react-scripts build",
+    "frontend:deploy": "netlify deploy -d build --prod",
+    "frontend:test": "react-scripts test",
+    "frontend:eject": "react-scripts eject",
     "lint": "eslint . --fix"
   },
   "eslintConfig": {

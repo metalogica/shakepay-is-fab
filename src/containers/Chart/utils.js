@@ -2,12 +2,21 @@ import axios from 'axios';
 import moment from 'moment';
 
 export const getNetworthSeries = async () => {
+  // forward requests via node proxy to solve CORS issue
+  const baseUrl = process.env.REACT_APP_PROXY_SERVER;
+  
   // make api call for fx rates
-  const ratesConfig = { method: 'GET', url: 'https://api.shakepay.co/rates' };
+  const ratesConfig = { 
+    method: 'GET', 
+    url: `${baseUrl}/api/rates`
+  };
   const fxRates = await axios(ratesConfig);
   
   // make api call for tx history
-  const txHistoryConfig = { method: 'GET', url: 'https://shakepay.github.io/programming-exercise/web/transaction_history.json' };
+  const txHistoryConfig = { 
+    method: 'GET', 
+    url: `${baseUrl}/api/txHistory` 
+  };
   const txHistory = await axios(txHistoryConfig);
 
   // init data structure for Chart
