@@ -1,5 +1,14 @@
-import { ratesStub } from './stubs.js';
-import { calculateChange, getNetworthSeries, transactionsOccuredOnSameDay, getFxRateByDate } from './utils';
+import { 
+  ratesStub, 
+  historicalRatesCADtoETH,  
+  historicalRatesCADtoBTC
+} from './stubs.js';
+import { 
+  calculateChange, 
+  getNetworthSeries, 
+  transactionsOccuredOnSameDay, 
+  getFxRateByDate 
+} from './utils';
 
 xdescribe('getNetworthSeries(', () => {
   it('should return the correct shape', () => {
@@ -64,8 +73,76 @@ describe('transactionsOccuredOnSameDay(tx1, tx2)', () => {
 });
 
 xdescribe('getFxRateByDate()', () => {
-  it('should return the historical fxRate', () => {
+  it('should return the historical fxRate for CAD_BTC', () => {
+    const tx = {
+      "createdAt": "2020-03-16T18:30:59.575Z",
+      "amount": 0.01,
+      "currency": "BTC",
+      "type": "peer",
+      "direction": "credit",
+      "from": {}
+    };
+    const rate = getFxRateByDate(tx, historicalRatesCADtoBTC);
 
+    expect(rate).toEqual(10657.125);
+  });
+
+  it('should return the historical fxRate for BTC_CAD', () => {
+    const tx = {
+      "createdAt": "2020-03-16T18:30:59.575Z",
+      "amount": 0.01,
+      "currency": "BTC",
+      "type": "peer",
+      "direction": "credit",
+      "from": {}
+    };
+    const rate = getFxRateByDate(tx, historicalRatesCADtoBTC);
+    const inverseRate = (1 / rate);
+    const actualInverseRate = (1/10657.125).toFixed(2);
+
+    expect(inverseRate).toEqual(actualInverseRate);
+  });
+
+  it('should return the historical fxRate for ETH_CAD', () => {
+    const tx = {
+      "createdAt": "2019-03-08T02:07:11.392Z",
+      "amount": 0.5,
+      "currency": "ETH",
+      "type": "conversion",
+      "direction": null,
+      "from": {
+          "currency": "ETH",
+          "amount": 0.5
+      },
+      "to": {
+          "currency": "CAD",
+          "amount": 89.77
+      }
+    };
+    const rate = getFxRateByDate(tx, historicalRatesCADtoETH);
+
+    expect(rate).toEqual(183.23183823440053);
+  });
+
+  it('should return the historical fxRate for CAD_ETH', () => {
+    const tx = {
+      "createdAt": "2019-03-08T02:07:11.392Z",
+      "amount": 0.5,
+      "currency": "ETH",
+      "type": "conversion",
+      "direction": null,
+      "from": {
+          "currency": "ETH",
+          "amount": 0.5
+      },
+      "to": {
+          "currency": "CAD",
+          "amount": 89.77
+      }
+    };
+    const rate = getFxRateByDate(tx, historicalRatesCADtoETH);
+
+    expect(rate).toEqual((1/183.23183823440053));
   });
 });
 

@@ -13,6 +13,32 @@ export const ratesStub = {
   "USD_CAD": 1.21
 };
 
+export const historicalRatesCADtoETH = [
+  {
+    "pair": "CAD_ETH",
+    "midMarketRate": 183.23183823440053,
+    "createdAt": "2019-03-08T00:00:01.194Z"
+  },
+  {
+      "pair": "CAD_ETH",
+      "midMarketRate": 178.07457772140742,
+      "createdAt": "2019-03-09T00:00:02.351Z"
+  }
+];
+
+export const historicalRatesCADtoBTC = [
+  {
+    "pair": "CAD_BTC",
+    "midMarketRate": 10657.125,
+    "createdAt": "2018-03-16T00:00:00.000Z"
+},
+{
+    "pair": "CAD_BTC",
+    "midMarketRate": 10796.783333333333,
+    "createdAt": "2018-03-17T00:00:00.000Z"
+},
+];
+
 export const txHistoryStub = [
   {
       "createdAt": "2020-04-20T15:49:57.741Z",
