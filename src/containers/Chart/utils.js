@@ -27,20 +27,26 @@ export const getNetworthSeries = async () => {
   let netWorth = 0.0;
   // api returns latest transactions first
   txHistory.data.reverse().forEach((tx, index) => {
-    // Issue can be found in utils.test.js
-    const change = calculateChange(tx, fxRates.data);
-    netWorth += change;
-
-    // accummulate all txs from the same day
-    let previousTx = txHistory.data[index-1];
-    if (!transactionsOccuredOnSameDay(previousTx, tx)) {
-      // build X values for chart
-      const date = moment(tx.createdAt).format('L');
-      labels.push(date);
-
-      // build y Values for chart
-      const roundedNetWorthInCad = netWorth.toFixed(2);
-      datasets[0].values.push(roundedNetWorthInCad);
+    // TODO: Debug the calculation of aggregate net worth.
+    // For visual reasons the chart is restrictedto the first 75 days of txs.
+    // This is because there is a calculation error due to either:
+    // A) Not taking into account historical spot rates
+    // B) Incorrect arithmetic
+    if (index < 75) {
+      const change = calculateChange(tx, fxRates.data);
+      netWorth += change;
+  
+      // accummulate all txs from the same day
+      let previousTx = txHistory.data[index-1];
+      if (!transactionsOccuredOnSameDay(previousTx, tx)) {
+        // build X values for chart
+        const date = moment(tx.createdAt).format('L');
+        labels.push(date);
+  
+        // build y Values for chart
+        const roundedNetWorthInCad = netWorth.toFixed(2);
+        datasets[0].values.push(roundedNetWorthInCad);
+      }
     }
   });
 
