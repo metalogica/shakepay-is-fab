@@ -28,7 +28,7 @@ xdescribe('getNetworthSeries(', () => {
   });
 });
 
-xdescribe('transactionsOccuredOnSameDay(tx1, tx2)', () => {
+describe('transactionsOccuredOnSameDay(tx1, tx2)', () => {
   it('should return true if tx1 and tx2 occured on the same day', () => {
     const tx1 = {
       "createdAt": "2020-01-13T21:44:11.811Z",
@@ -167,7 +167,7 @@ describe('getFxRateByDate()', () => {
   });
 });
 
-xdescribe('calculateChange(tx: Object)', () => {
+describe('calculateChange(tx: Object)', () => {
   it('should calculate CAD credit correctly', () => {
     const tx = {
       "createdAt": "2020-04-20T15:49:57.741Z",
