@@ -43,7 +43,8 @@ export const getNetworthSeries = async () => {
         labels.push(date);
 
         // build y Values for chart
-        datasets[0].values.push(netWorth);
+        const roundedNetWorthInCad = netWorth.toFixed(2);
+        datasets[0].values.push(roundedNetWorthInCad);
       }
     }
   });
