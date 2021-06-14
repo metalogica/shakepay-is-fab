@@ -32,7 +32,7 @@ export const getNetworthSeries = async () => {
       const change = calculateChange(tx, fxRates.data);
       netWorth += change;
 
-      // This is a tremporary UI workaround. The calculateChange() is producing errors.
+      // This is a temporary UI workaround. The calculateChange() is producing errors.
       netWorth = netWorth < 0 ? 0 : netWorth;
   
       // accummulate all txs from the same day
