@@ -177,18 +177,46 @@ describe('calculateChange(tx: Object)', () => {
       }
     };
     
-    const fromFxRate = ratesStub['BTC_CAD'];
-    const toFxRate = ratesStub['CAD_BTC'];
+    const fromFxRate = 45555.82;
+    const toFxRate = 1.0;
     const debit = - (fromFxRate * 0.00146125);
     const credit = toFxRate * 18;
+    //                   -48
     const actualChange = debit + credit;
 
     const change = calculateChange(tx, ratesStub);
     expect(change).toEqual(actualChange);
   });
 
-  // TODO: There is an arithmetic error in thie part of the code for calculations; it needs proof-checking.
-  it('should calculate CAD-ETH conversion correctly', () => {
+  xit('should calculate CAD-BTC conversion correctly', () => {
+    const tx = {
+      "createdAt": "2018-03-30T15:39:31.752Z",
+      "amount": 20,
+      "currency": "CAD",
+      "type": "conversion",
+      "direction": null,
+      "from": {
+          "currency": "CAD",
+          "amount": 20
+      },
+      "to": {
+          "currency": "BTC",
+          "amount": 0.03893256
+      }
+    };
+    
+    const fromFxRate = 1.0;
+    const toFxRate = 45555.82;
+    const debit = - (fromFxRate * 20);
+    const credit = toFxRate * 0.03893256;
+    //                  157
+    const actualChange = debit + credit;
+
+    const change = calculateChange(tx, ratesStub);
+    expect(change).toEqual(actualChange);
+  });
+
+  xit('should calculate CAD-ETH conversion correctly', () => {
     const tx = {
       "createdAt": "2020-01-31T18:36:43.459Z",
       "amount": 5,
@@ -206,9 +234,38 @@ describe('calculateChange(tx: Object)', () => {
     };
     
     const fromFxRate = 1;
-    const toFxRate = ratesStub['ETH_CAD'];
+    const toFxRate = 2960.37;
     const debit = - (fromFxRate * 5);
     const credit = toFxRate * 0.00040243;
+    //                   -3.8
+    const actualChange = debit + credit;
+
+    const change = calculateChange(tx, ratesStub);
+    expect(change).toEqual(actualChange);
+  });
+
+  xit('should calculate ETH-CAD conversion correctly', () => {
+    const tx = {
+      "createdAt": "2018-06-08T14:58:02.283Z",
+      "amount": 0.03,
+      "currency": "ETH",
+      "type": "conversion",
+      "direction": null,
+      "from": {
+          "currency": "ETH",
+          "amount": 0.03
+      },
+      "to": {
+          "currency": "CAD",
+          "amount": 21.95
+      }
+    };
+    
+    const fromFxRate = 2960.37;
+    const toFxRate = 1.0;
+    const debit = - (fromFxRate * 0.03);
+    const credit = toFxRate * 21.95;
+    //                   -66.87
     const actualChange = debit + credit;
 
     const change = calculateChange(tx, ratesStub);

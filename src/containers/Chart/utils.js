@@ -25,27 +25,21 @@ export const getNetworthSeries = async () => {
 
   // loop through txHistory and calculate net-worth
   let netWorth = 0.0;
-  txHistory.data.forEach((tx, index) => {
-    // TODO: There is an error in the networth calculator on CONVERSIONS that disrupts the visualisation of the data.
+  txHistory.data.reverse().forEach((tx, index) => {
     // Issue can be found in utils.test.js
-    if (index< 80) {
-      const change = calculateChange(tx, fxRates.data);
-      netWorth += change;
-      
-      // This is a temporary UI workaround. The calculateChange() is producing errors.
-      netWorth = netWorth < 0 ? 0 : netWorth;
-      
-      // accummulate all txs from the same day
-      let previousTx = txHistory.data[index-1];
-      if (!transactionsOccuredOnSameDay(previousTx, tx)) {
-        // build X values for chart
-        const date = moment(tx.createdAt).format('MMM D');
-        labels.push(date);
+    const change = calculateChange(tx, fxRates.data);
+    netWorth += change;
+    
+    // accummulate all txs from the same day
+    let previousTx = txHistory.data[index-1];
+    if (!transactionsOccuredOnSameDay(previousTx, tx)) {
+      // build X values for chart
+      const date = moment(tx.createdAt).format('L');
+      labels.push(date);
 
-        // build y Values for chart
-        const roundedNetWorthInCad = netWorth.toFixed(2);
-        datasets[0].values.push(roundedNetWorthInCad);
-      }
+      // build y Values for chart
+      const roundedNetWorthInCad = netWorth.toFixed(2);
+      datasets[0].values.push(roundedNetWorthInCad);
     }
   });
 
@@ -65,49 +59,40 @@ export const transactionsOccuredOnSameDay = (tx1, tx2) => {
 };
 
 export const calculateChange = (tx, fxRates) => {
-  const { from, to } = tx;
-
   if (tx.type === 'conversion') {
-    // console.dir(tx);
-    //    BTC_CAD
-    const fromAtoB= `${from.currency}_${to.currency}`;
-    // console.log('from btc to cad: ', fromAtoB);
-    //    CAD_BTC
-    const fromBtoA = `${to.currency}_${from.currency}`;
-    // console.log('ffrom cad to btc: ', fromBtoA);
+    // TODO: Must incorporate historical spot data
+    // naive assumption: conversion are using constant spot rate, 
+    // this function will only deliver accurates results if it uses
+    // the historical spot rate.
 
-    const fromAtoBFxrate = fxRates[fromAtoB];
-    // console.log('from btc to cad: ', fromAtoBFxrate);
-    const fromBtoAFxrate = fxRates[fromBtoA];
-    // console.log('from cad to btc: ', fromBtoAFxrate);
+    const { from, to } = tx;
+    const fromAtoB= `${from.currency}_CAD`;
+    const fromBtoA = `${to.currency}_CAD`;
+
+    const fromAtoBFxrate = fxRates[fromAtoB] || 1.0;
+    const fromBtoAFxrate = fxRates[fromBtoA] || 1.0;
 
     const fromAmount = from.amount * fromAtoBFxrate;
-    // console.log('from BTC amount: ', fromAmount);
     const toAmount = to.amount * fromBtoAFxrate;
-    // console.log('to CAD amount: ', toAmount);
 
     const debit = - fromAmount;
-    // console.log('credit: ', debit);
     const credit = toAmount;
-    // console.log('debit: ', credit);
 
     const change = credit + debit;
-    // console.log(change);
-
     return change;
   } else {
+    // handle standard debit / credit txs 
+    // find the currency pairing
     const fromAtoB = `${tx.currency}_CAD`;
-    // console.log(fromAtoB);
+
     // if we cannot find the rate then we assume it is CAD_CAD
     const fxRate = fxRates[fromAtoB] || 1.0;
-    // console.log(fxRate);
 
+    // calculate change
     let change = tx.amount * fxRate;
-    // console.log(change);
 
     // Credits are added to net worth, debits are subtracted from net worth.
     change = tx.direction === 'credit' ? change : -change;
-    // console.log(change);
 
     return change;
   }
