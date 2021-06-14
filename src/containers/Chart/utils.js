@@ -3,7 +3,7 @@ import moment from 'moment';
 
 export const getNetworthSeries = async () => {
   // forward requests via node proxy to solve CORS issue
-  const baseUrl = process.env.REACT_APP_PROXY_SERVER;
+  const baseUrl = "https://shakepay-is-fab-backend.herokuapp.com";
   
   // make api call for fx rates
   const ratesConfig = { 
