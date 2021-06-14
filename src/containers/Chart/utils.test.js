@@ -1,8 +1,8 @@
 import { ratesStub } from './stubs.js';
-import { calculateChange, getNetworthSeries, transactionsOccuredOnSameDay } from './utils';
+import { calculateChange, getNetworthSeries, transactionsOccuredOnSameDay, getFxRateByDate } from './utils';
 
 xdescribe('getNetworthSeries(', () => {
-  xit('should return the correct shape', () => {
+  it('should return the correct shape', () => {
     const stub = {
       labels: ['d1', 'd2', 'd3'],
       datasets: [{ values: [43, 55, 66, 80, 77]}]
@@ -15,11 +15,11 @@ xdescribe('getNetworthSeries(', () => {
     );
   });
 
-  xit('should allow a customer to filter date range', () => {
+  it('should allow a customer to filter date range', () => {
   });
 });
 
-xdescribe('transactionsOccuredOnSameDay(tx1, tx2)', () => {
+describe('transactionsOccuredOnSameDay(tx1, tx2)', () => {
   it('should return true if tx1 and tx2 occured on the same day', () => {
     const tx1 = {
       "createdAt": "2020-01-13T21:44:11.811Z",
@@ -63,8 +63,14 @@ xdescribe('transactionsOccuredOnSameDay(tx1, tx2)', () => {
   });
 });
 
+xdescribe('getFxRateByDate()', () => {
+  it('should return the historical fxRate', () => {
+
+  });
+});
+
 describe('calculateChange(tx: Object)', () => {
-  xit('should calculate CAD credit correctly', () => {
+  it('should calculate CAD credit correctly', () => {
     const tx = {
       "createdAt": "2020-04-20T15:49:57.741Z",
       "amount": 100,
@@ -78,7 +84,7 @@ describe('calculateChange(tx: Object)', () => {
     expect(change).toEqual(100);
   });
 
-  xit('should calculate CAD debit correctly', () => {
+  it('should calculate CAD debit correctly', () => {
     const tx = {
       "createdAt": "2020-04-20T15:49:57.741Z",
       "amount": 100,
@@ -92,7 +98,7 @@ describe('calculateChange(tx: Object)', () => {
     expect(change).toEqual(-100);
   });
 
-  xit('should calculate BTC credit correctly', () => {
+  it('should calculate BTC credit correctly', () => {
     const tx = {
       "createdAt": "2020-03-16T18:30:59.575Z",
       "amount": 0.01,
@@ -102,14 +108,14 @@ describe('calculateChange(tx: Object)', () => {
       "from": {}
     };
     
-    const fxRate = ratesStub['BTC_CAD'];
+    const fxRate = 45555.82;
     const actualChange = (fxRate * 0.01);
 
     const change = calculateChange(tx, ratesStub);
     expect(change).toEqual(actualChange);
   });
 
-  xit('should calculate BTC debit correctly', () => {
+  it('should calculate BTC debit correctly', () => {
     const tx = {
       "createdAt": "2020-03-16T18:30:59.575Z",
       "amount": 0.01,
@@ -119,14 +125,14 @@ describe('calculateChange(tx: Object)', () => {
       "from": {}
     };
     
-    const fxRate = ratesStub['BTC_CAD'];
+    const fxRate = 45555.82;
     const actualChange = - (fxRate * 0.01);
 
     const change = calculateChange(tx, ratesStub);
     expect(change).toEqual(actualChange);
   });
 
-  xit('should calculate ETH credit correctly', () => {
+  it('should calculate ETH credit correctly', () => {
     const tx = {
       "createdAt": "2020-03-16T18:30:59.575Z",
       "amount": 0.01,
@@ -136,14 +142,14 @@ describe('calculateChange(tx: Object)', () => {
       "from": {}
     };
     
-    const fxRate = ratesStub['ETH_CAD'];
+    const fxRate = 2960.37;
     const actualChange = (fxRate * 0.01);
 
     const change = calculateChange(tx, ratesStub);
     expect(change).toEqual(actualChange);
   });
 
-  xit('should calculate ETH debit correctly', () => {
+  it('should calculate ETH debit correctly', () => {
     const tx = {
       "createdAt": "2020-03-16T18:30:59.575Z",
       "amount": 0.01,
@@ -153,14 +159,14 @@ describe('calculateChange(tx: Object)', () => {
       "from": {}
     };
     
-    const fxRate = ratesStub['ETH_CAD'];
+    const fxRate = 2960.37;
     const actualChange = - (fxRate * 0.01);
 
     const change = calculateChange(tx, ratesStub);
     expect(change).toEqual(actualChange);
   });
 
-  xit('should calculate BTC-CAD conversion correctly', () => {
+  it('should calculate BTC-CAD conversion correctly', () => {
     const tx = {
       "createdAt": "2020-02-20T03:06:57.742Z",
       "amount": 0.00146125,
@@ -188,7 +194,7 @@ describe('calculateChange(tx: Object)', () => {
     expect(change).toEqual(actualChange);
   });
 
-  xit('should calculate CAD-BTC conversion correctly', () => {
+  it('should calculate CAD-BTC conversion correctly', () => {
     const tx = {
       "createdAt": "2018-03-30T15:39:31.752Z",
       "amount": 20,
@@ -216,7 +222,7 @@ describe('calculateChange(tx: Object)', () => {
     expect(change).toEqual(actualChange);
   });
 
-  xit('should calculate CAD-ETH conversion correctly', () => {
+  it('should calculate CAD-ETH conversion correctly', () => {
     const tx = {
       "createdAt": "2020-01-31T18:36:43.459Z",
       "amount": 5,
@@ -244,7 +250,7 @@ describe('calculateChange(tx: Object)', () => {
     expect(change).toEqual(actualChange);
   });
 
-  xit('should calculate ETH-CAD conversion correctly', () => {
+  it('should calculate ETH-CAD conversion correctly', () => {
     const tx = {
       "createdAt": "2018-06-08T14:58:02.283Z",
       "amount": 0.03,

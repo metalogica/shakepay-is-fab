@@ -25,11 +25,12 @@ export const getNetworthSeries = async () => {
 
   // loop through txHistory and calculate net-worth
   let netWorth = 0.0;
+  // api returns latest transactions first
   txHistory.data.reverse().forEach((tx, index) => {
     // Issue can be found in utils.test.js
     const change = calculateChange(tx, fxRates.data);
     netWorth += change;
-    
+
     // accummulate all txs from the same day
     let previousTx = txHistory.data[index-1];
     if (!transactionsOccuredOnSameDay(previousTx, tx)) {
@@ -58,8 +59,17 @@ export const transactionsOccuredOnSameDay = (tx1, tx2) => {
   return moment(day1).format('L') === moment(day2).format('L');
 };
 
+// This fn exists just for development
+export const getFxRateByDate = (date, currencyPair, historicalRatesArray) => {
+};
+
 export const calculateChange = (tx, fxRates) => {
   if (tx.type === 'conversion') {
+    // Naive assumption: If a conversion is made then the net worth of that
+    // day remains identical. This is false; the netw worth will change
+    // by a small sum depending on the fx_rate margin on currency pair.
+    // return 0;
+
     // TODO: Must incorporate historical spot data
     // naive assumption: conversion are using constant spot rate, 
     // this function will only deliver accurates results if it uses
