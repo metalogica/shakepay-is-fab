@@ -28,7 +28,7 @@ xdescribe('getNetworthSeries(', () => {
   });
 });
 
-describe('transactionsOccuredOnSameDay(tx1, tx2)', () => {
+xdescribe('transactionsOccuredOnSameDay(tx1, tx2)', () => {
   it('should return true if tx1 and tx2 occured on the same day', () => {
     const tx1 = {
       "createdAt": "2020-01-13T21:44:11.811Z",
@@ -72,7 +72,7 @@ describe('transactionsOccuredOnSameDay(tx1, tx2)', () => {
   });
 });
 
-xdescribe('getFxRateByDate()', () => {
+describe('getFxRateByDate()', () => {
   it('should return the historical fxRate for CAD_BTC', () => {
     const tx = {
       "createdAt": "2020-03-16T18:30:59.575Z",
@@ -144,9 +144,30 @@ xdescribe('getFxRateByDate()', () => {
 
     expect(rate).toEqual((1/183.23183823440053));
   });
+
+  it('should return the constant fxRate for ETH_CAD if no historical data is available', () => {
+    const tx = {
+      "createdAt": "2018-06-08T20:23:52.783Z",
+      "amount": 0.025,
+      "currency": "ETH",
+      "type": "conversion",
+      "direction": null,
+      "from": {
+          "currency": "ETH",
+          "amount": 0.025
+      },
+      "to": {
+          "currency": "CAD",
+          "amount": 18.32
+      }
+    };
+    const rate = getFxRateByDate(tx, historicalRatesCADtoETH);
+    //                   this is the value found in ratesStub['ETH_CAD'];
+    expect(rate).toEqual(2960.37);
+  });
 });
 
-describe('calculateChange(tx: Object)', () => {
+xdescribe('calculateChange(tx: Object)', () => {
   it('should calculate CAD credit correctly', () => {
     const tx = {
       "createdAt": "2020-04-20T15:49:57.741Z",
