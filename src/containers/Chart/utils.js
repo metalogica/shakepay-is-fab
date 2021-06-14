@@ -17,7 +17,7 @@ export const getNetworthSeries = async () => {
     method: 'GET', 
     url: `${baseUrl}/api/txHistory` 
   };
-  const txHistory = await axios(txHistoryConfig);
+  let txHistory = await axios(txHistoryConfig);
 
   // init data structure for Chart
   const labels = [];
@@ -31,14 +31,20 @@ export const getNetworthSeries = async () => {
     if (index< 80) {
       const change = calculateChange(tx, fxRates.data);
       netWorth += change;
-
+      
       // This is a temporary UI workaround. The calculateChange() is producing errors.
       netWorth = netWorth < 0 ? 0 : netWorth;
-  
+      
       // accummulate all txs from the same day
-      const date = moment(tx.createdAt).format('MMM D');
-      labels.push(date);
-      datasets[0].values.push(netWorth);
+      let previousTx = txHistory.data[index-1];
+      if (!transactionsOccuredOnSameDay(previousTx, tx)) {
+        // build X values for chart
+        const date = moment(tx.createdAt).format('MMM D');
+        labels.push(date);
+
+        // build y Values for chart
+        datasets[0].values.push(netWorth);
+      }
     }
   });
 
@@ -49,6 +55,8 @@ export const getNetworthSeries = async () => {
 };
 
 export const transactionsOccuredOnSameDay = (tx1, tx2) => {
+  if (tx1 === undefined || tx2 === undefined) return false;
+
   const day1 = tx1.createdAt;
   const day2 = tx2.createdAt;
 
