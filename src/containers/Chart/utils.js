@@ -18,6 +18,11 @@ export const getNetworthSeries = async () => {
     url: `${baseUrl}/api/txHistory` 
   };
   let txHistory = await axios(txHistoryConfig);
+  
+  // get historical rates
+  const historicalEthRates = await axios({method: 'GET', url: `${baseUrl}/api/historical_rates_ETH`});
+  const historicalBtcRates = await axios({method: 'GET', url: `${baseUrl}/api/historical_rates_BTC`});
+  console.log(historicalEthRates.data, historicalBtcRates.data);
 
   // init data structure for Chart
   const labels = [];
@@ -65,8 +70,40 @@ export const transactionsOccuredOnSameDay = (tx1, tx2) => {
   return moment(day1).format('L') === moment(day2).format('L');
 };
 
-// This fn exists just for development
-export const getFxRateByDate = (date, currencyPair, historicalRatesArray) => {
+export const getFxRateByDate = (txDate, currencyPair, historicalRatesArray, spotRatesArray) => {
+  if (currencyPair === 'CAD_CAD') return 1.0;
+
+  // check if the historical rate exists for given date range
+  const startDate = historicalRatesArray[0].createdAt;
+  const endDate = historicalRatesArray[historicalRatesArray.length-1].createdAt;
+  
+  const historicalRateExists = moment(txDate) >= moment(startDate) && moment(txDate) <= moment(endDate);
+
+  // TODO: should probably return the closest historical spot rate if an exact date does not exist.
+  // Current solution might lead to outliers. 
+  if (!historicalRateExists) { 
+    // return current spot rate if no historical rate exists 
+    const constantRate = spotRatesArray[currencyPair];
+    // we must take the inverse rate b/c of discrepencies in the api result
+    // Historical rate api CAD_BTC = 17678
+    // Spot rate api CAD_BTC = 0.00002195
+    const correctRate = (1 / constantRate).toFixed(2);
+    
+    return correctRate;
+  }
+
+  // loop through historical rates and find the correct one
+  // TODO: use a binary search or faster algo with Log(O) or better.
+  const rate = historicalRatesArray.find(rate => { 
+    return moment(rate.createdAt).format('L') === moment(txDate).format('L');
+  }).midMarketRate;
+
+  // check to see if we should return the inverse rate. Examples from API response:
+  // standard rates: CAD_BTC === 17678
+  // inverse rates:  BTC_CAD === 1/7678
+  const shouldInvertRate = currencyPair.slice(0,3) !== 'CAD';
+
+  return shouldInvertRate ? (1 / rate).toFixed(5) : rate.toFixed(5);
 };
 
 export const calculateChange = (tx, fxRates) => {
@@ -82,7 +119,7 @@ export const calculateChange = (tx, fxRates) => {
     // the historical spot rate.
 
     const { from, to } = tx;
-    const fromAtoB= `${from.currency}_CAD`;
+    const fromAtoB = `${from.currency}_CAD`;
     const fromBtoA = `${to.currency}_CAD`;
 
     const fromAtoBFxrate = fxRates[fromAtoB] || 1.0;
@@ -95,6 +132,7 @@ export const calculateChange = (tx, fxRates) => {
     const credit = toAmount;
 
     const change = credit + debit;
+
     return change;
   } else {
     // handle standard debit / credit txs 

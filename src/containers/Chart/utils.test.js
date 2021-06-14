@@ -28,7 +28,7 @@ xdescribe('getNetworthSeries(', () => {
   });
 });
 
-describe('transactionsOccuredOnSameDay(tx1, tx2)', () => {
+xdescribe('transactionsOccuredOnSameDay(tx1, tx2)', () => {
   it('should return true if tx1 and tx2 occured on the same day', () => {
     const tx1 = {
       "createdAt": "2020-01-13T21:44:11.811Z",
@@ -73,39 +73,43 @@ describe('transactionsOccuredOnSameDay(tx1, tx2)', () => {
 });
 
 describe('getFxRateByDate()', () => {
-  it('should return the historical fxRate for CAD_BTC', () => {
-    const tx = {
-      "createdAt": "2020-03-16T18:30:59.575Z",
-      "amount": 0.01,
-      "currency": "BTC",
-      "type": "peer",
-      "direction": "credit",
-      "from": {}
-    };
-    const rate = getFxRateByDate(tx, historicalRatesCADtoBTC);
-
-    expect(rate).toEqual(10657.125);
-  });
-
   it('should return the historical fxRate for BTC_CAD', () => {
     const tx = {
-      "createdAt": "2020-03-16T18:30:59.575Z",
+      "createdAt": "2018-03-16T18:30:59.575Z",
       "amount": 0.01,
       "currency": "BTC",
       "type": "peer",
       "direction": "credit",
       "from": {}
     };
-    const rate = getFxRateByDate(tx, historicalRatesCADtoBTC);
-    const inverseRate = (1 / rate);
-    const actualInverseRate = (1/10657.125).toFixed(2);
+    const txDate = tx.createdAt;
+    const currencyPair = 'BTC_CAD';
+    const rate = getFxRateByDate(txDate, currencyPair, historicalRatesCADtoBTC, ratesStub);
+    const actualInverseRate = (1 / 10796.783333333333).toFixed(5);
 
-    expect(inverseRate).toEqual(actualInverseRate);
+    expect(rate).toEqual(actualInverseRate);
+  });
+
+  it('should return the historical fxRate for CAD_BTC', () => {
+    const tx = {
+      "createdAt": "2018-03-16T00:00:00.000Z",
+      "amount": 0.01,
+      "currency": "BTC",
+      "type": "peer",
+      "direction": "credit",
+      "from": {}
+    };
+    const txDate = tx.createdAt;
+    const currencyPair = 'CAD_BTC';
+    const rate = getFxRateByDate(txDate, currencyPair, historicalRatesCADtoBTC, ratesStub);
+    const actualRate = (10657.125).toFixed(5);
+
+    expect(rate).toEqual(actualRate);
   });
 
   it('should return the historical fxRate for ETH_CAD', () => {
     const tx = {
-      "createdAt": "2019-03-08T02:07:11.392Z",
+      "createdAt": "2019-03-08T00:00:01.194Z",
       "amount": 0.5,
       "currency": "ETH",
       "type": "conversion",
@@ -119,14 +123,17 @@ describe('getFxRateByDate()', () => {
           "amount": 89.77
       }
     };
-    const rate = getFxRateByDate(tx, historicalRatesCADtoETH);
+    const txDate = tx.createdAt;
+    const currencyPair = 'ETH_CAD';
+    const rate = getFxRateByDate(txDate, currencyPair, historicalRatesCADtoETH, ratesStub);
+    const actualRate = (1 / 183.23183823440053).toFixed(5);
 
-    expect(rate).toEqual(183.23183823440053);
+    expect(rate).toEqual(actualRate);
   });
 
   it('should return the historical fxRate for CAD_ETH', () => {
     const tx = {
-      "createdAt": "2019-03-08T02:07:11.392Z",
+      "createdAt": "2019-03-09T00:00:02.351Z",
       "amount": 0.5,
       "currency": "ETH",
       "type": "conversion",
@@ -140,12 +147,39 @@ describe('getFxRateByDate()', () => {
           "amount": 89.77
       }
     };
-    const rate = getFxRateByDate(tx, historicalRatesCADtoETH);
+    const txDate = tx.createdAt;
+    const currencyPair = 'CAD_ETH';
+    const rate = getFxRateByDate(txDate, currencyPair, historicalRatesCADtoETH, ratesStub);
+    const actualRate = (178.07457772140742).toFixed(5);
 
-    expect(rate).toEqual((1/183.23183823440053));
+    expect(rate).toEqual(actualRate);
   });
 
-  it('should return the constant fxRate for ETH_CAD if no historical data is available', () => {
+  it('should return the constant fxRate for CAD_ETH if no historical data is available', () => {
+    const tx = {
+      "createdAt": "2017-06-08T20:23:52.783Z",
+      "amount": 0.025,
+      "currency": "ETH",
+      "type": "conversion",
+      "direction": null,
+      "from": {
+          "currency": "ETH",
+          "amount": 0.025
+      },
+      "to": {
+          "currency": "CAD",
+          "amount": 18.32
+      }
+    };
+    const txDate = tx.createdAt;
+    const currencyPair = 'CAD_ETH';
+    const rate = getFxRateByDate(txDate, currencyPair, historicalRatesCADtoETH, ratesStub);
+    const actualRate = (2960.37).toFixed(2);
+    //                   this is the value found in ratesStub['ETH_CAD'];
+    expect(rate).toEqual(actualRate);
+  });
+
+  it('should return 1.0 if CAD_CAD is provided', () => {
     const tx = {
       "createdAt": "2018-06-08T20:23:52.783Z",
       "amount": 0.025,
@@ -161,13 +195,15 @@ describe('getFxRateByDate()', () => {
           "amount": 18.32
       }
     };
-    const rate = getFxRateByDate(tx, historicalRatesCADtoETH);
-    //                   this is the value found in ratesStub['ETH_CAD'];
-    expect(rate).toEqual(2960.37);
+    const txDate = tx.createdAt;
+    const currencyPair = 'CAD_CAD';
+    const rate = getFxRateByDate(txDate, currencyPair, historicalRatesCADtoETH, ratesStub);
+
+    expect(rate).toEqual(1.0);
   });
 });
 
-describe('calculateChange(tx: Object)', () => {
+xdescribe('calculateChange(tx: Object)', () => {
   it('should calculate CAD credit correctly', () => {
     const tx = {
       "createdAt": "2020-04-20T15:49:57.741Z",

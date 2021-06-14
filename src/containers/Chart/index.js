@@ -8,7 +8,6 @@ function ChartWrapper() {
   
   !data && getNetworthSeries()
     .then(response => { 
-      console.log(response);
       setData(response); 
     })
     .catch(error => setError(true));
