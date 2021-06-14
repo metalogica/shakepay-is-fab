@@ -35,6 +35,7 @@ export const getNetworthSeries = async () => {
       // This is a tremporary UI workaround. The calculateChange() is producing errors.
       netWorth = netWorth < 0 ? 0 : netWorth;
   
+      // accummulate all txs from the same day
       const date = moment(tx.createdAt).format('MMM D');
       labels.push(date);
       datasets[0].values.push(netWorth);
@@ -45,6 +46,13 @@ export const getNetworthSeries = async () => {
     labels,
     datasets
   };
+};
+
+export const transactionsOccuredOnSameDay = (tx1, tx2) => {
+  const day1 = tx1.createdAt;
+  const day2 = tx2.createdAt;
+
+  return moment(day1).format('L') === moment(day2).format('L');
 };
 
 export const calculateChange = (tx, fxRates) => {
