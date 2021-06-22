@@ -1,18 +1,24 @@
+/* eslint-disable no-debugger */
 import React, { useState, useContext } from 'react';
 import ReactFrappeChart from 'react-frappe-charts';
+import { usePrevious } from '../../hooks';
 import { getNetworthSeries } from './utils';
 import { ChartContext } from '../../contexts/ChartContext';
 
 function ChartWrapper() {  
-  const [ state ] = useContext(ChartContext);
-  console.log(state);
-  const [ data, setData ] = useState(false);
+  const [ state, setState ] = useContext(ChartContext);
+  const { startDate, endDate, data } = state;
   const [ error, setError ] = useState(false);
+
+  const prevState = usePrevious(state) || {};
+  const dateChange = (prevState.startDate !== startDate || prevState.endDate !== endDate);
+  const initialLoad = ((startDate === '' && endDate === '') && !data);
+  console.log(prevState, state);
+  console.log('date change: ', dateChange, 'initialLoad: ', initialLoad);
+  console.log('shoudl re-render: ', (dateChange || initialLoad));
   
-  !data && getNetworthSeries()
-    .then(response =>  { 
-      setData(response); 
-    })
+  (dateChange || initialLoad) && getNetworthSeries(startDate, endDate)
+    .then(response =>  setState({...state, data: response}))
     .catch(error => setError(true));
 
   return (

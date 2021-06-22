@@ -6,7 +6,7 @@ const ChartContextProvider = (props) => {
   const defaultChartState = {
     startDate: '',
     endDate: '',
-    data: {}
+    data: false
   };
 
   const [state, setState] = useState(defaultChartState);

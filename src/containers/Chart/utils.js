@@ -50,7 +50,7 @@ export const getNetworthSeries = async (startDate='', endDate='') => {
     // This is because there is a calculation error due to either:
     // A) Not taking into account historical spot rates
     // B) Incorrect arithmetic
-    if (index < 75) {
+    // if (index < 75) {
       const change = calculateChange(tx, fxRates.data);
       netWorth += change;
   
@@ -66,7 +66,7 @@ export const getNetworthSeries = async (startDate='', endDate='') => {
         datasets[0].values.push(roundedNetWorthInCad);
       }
       // console.log(labels);
-    }
+    // }
     // console.log(txHistory.data.map(tx=>tx.createdAt));
   });
 
