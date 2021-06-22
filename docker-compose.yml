@@ -1,0 +1,13 @@
+# this is a naive docker build. We must first run a production build then load that into the container as a set of static files
+version: "3.8"
+services:
+  create-react-app:
+    container_name: create-react-app
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/app'
+      - 'app/node_modules'
+    ports:
+      - '3049:3000'
