@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 import React, { useState, useContext } from 'react';
 import ReactFrappeChart from 'react-frappe-charts';
 import { usePrevious } from '../../hooks';

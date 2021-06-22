@@ -5,8 +5,6 @@ import ChartContextProvider from './contexts/ChartContext';
 import ChartWrapper from './containers/Chart';
 import Control from './containers/Control';
 
-// const ChartContext = React.createContext([{}, () => {}]);
-
 function App() {
   return (
     <div className="app"> 

@@ -4,10 +4,9 @@ import { ChartContext } from '../../contexts/ChartContext';
 import './style.css';
 
 function Control(props) {
-  const [state, setState] = useContext(ChartContext); //eslint-disable-line
+  const [state, setState] = useContext(ChartContext); 
 
   const { handleSubmit, register } = useForm();
-  // debugger;//eslint-disable-line
 
   const onSubmit = (data) => { 
     const { startDate, endDate } = data;
