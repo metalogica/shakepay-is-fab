@@ -6,23 +6,27 @@ export const getNetworthSeries = async (startDate='', endDate='') => {
   const baseUrl = "https://shakepay-is-fab-backend.herokuapp.com";
   
   // make api call for fx rates
-  const ratesConfig = { 
+  const fxRates = await axios({ 
     method: 'GET', 
     url: `${baseUrl}/api/rates`
-  };
-  const fxRates = await axios(ratesConfig);
+  });
   
   // make api call for tx history
-  const txHistoryConfig = { 
+  const txHistory = await axios({ 
     method: 'GET', 
     url: `${baseUrl}/api/txHistory` 
-  };
-  let txHistory = await axios(txHistoryConfig);
+  });
   
   // get historical rates
-  // const historicalEthRates = await axios({method: 'GET', url: `${baseUrl}/api/historical_rates_ETH`});
-  // const historicalBtcRates = await axios({method: 'GET', url: `${baseUrl}/api/historical_rates_BTC`});
-  // console.log(historicalEthRates.data, historicalBtcRates.data);
+  const historicalEthRates = await axios({
+    method: 'GET', url: `${baseUrl}/api/historical_rates_ETH`
+  });
+  const historicalBtcRates = await axios({
+    method: 'GET', url: `${baseUrl}/api/historical_rates_BTC`
+  });
+
+  const allApiRequestsSuccessfullyMade = Promise.all([fxRates, txHistory, historicalEthRates, historicalBtcRates]);
+  if (!allApiRequestsSuccessfullyMade) throw(Error('Some API requests were unsuccessful: ', allApiRequestsSuccessfullyMade));
 
   // init data structure for Chart
   const labels = [];
