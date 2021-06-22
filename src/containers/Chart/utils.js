@@ -19,12 +19,14 @@ export const getNetworthSeries = async (startDate='', endDate='') => {
   
   // get historical rates
   const historicalEthRates = await axios({
-    method: 'GET', url: `${baseUrl}/api/historical_rates_ETH`
+    method: 'GET', 
+    url: `${baseUrl}/api/historical_rates_ETH`
   });
   const historicalBtcRates = await axios({
-    method: 'GET', url: `${baseUrl}/api/historical_rates_BTC`
+    method: 'GET', 
+    url: `${baseUrl}/api/historical_rates_BTC`
   });
-
+  
   const allApiRequestsSuccessfullyMade = Promise.all([fxRates, txHistory, historicalEthRates, historicalBtcRates]);
   if (!allApiRequestsSuccessfullyMade) throw(Error('Some API requests were unsuccessful: ', allApiRequestsSuccessfullyMade));
 
