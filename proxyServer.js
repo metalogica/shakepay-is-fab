@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 // Used to eliminate CORS issues for client-facing app.
 const express = require('express');
 const request = require('request');
@@ -10,6 +11,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/api/rates', (req, res) => {
+  debugger; 
   request(
     { url: 'https://api.shakepay.co/rates' },
     (error, response, body) => {

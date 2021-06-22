@@ -2,8 +2,9 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import './style.css';
 
-function Control() {
+function Control(props) {
   const { handleSubmit, register } = useForm();
+  // debugger;//eslint-disable-line
 
   const onSubmit = (data) => { 
     console.log(data); 
