@@ -1,6 +1,5 @@
 import React, { useState, createContext } from 'react';
 
-
 const ChartContext = createContext([{}, () => {}]);
 
 const ChartContextProvider = (props) => {
