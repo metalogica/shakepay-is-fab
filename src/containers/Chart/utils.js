@@ -20,9 +20,9 @@ export const getNetworthSeries = async () => {
   let txHistory = await axios(txHistoryConfig);
   
   // get historical rates
-  const historicalEthRates = await axios({method: 'GET', url: `${baseUrl}/api/historical_rates_ETH`});
-  const historicalBtcRates = await axios({method: 'GET', url: `${baseUrl}/api/historical_rates_BTC`});
-  console.log(historicalEthRates.data, historicalBtcRates.data);
+  // const historicalEthRates = await axios({method: 'GET', url: `${baseUrl}/api/historical_rates_ETH`});
+  // const historicalBtcRates = await axios({method: 'GET', url: `${baseUrl}/api/historical_rates_BTC`});
+  // console.log(historicalEthRates.data, historicalBtcRates.data);
 
   // init data structure for Chart
   const labels = [];
