@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
+import { ChartContext } from '../../contexts/ChartContext';
 import './style.css';
 
 function Control(props) {
+  const [state, setState] = useContext(ChartContext); //eslint-disable-line
+
   const { handleSubmit, register } = useForm();
   // debugger;//eslint-disable-line
 
   const onSubmit = (data) => { 
-    console.log(data); 
+    setState({...state});
+    console.log(state); 
   };
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState, createContext } from 'react';
 
-const ChartContext = createContext([{}, () => {}]);
+export const ChartContext = createContext([{}, () => {}]);
 
 const ChartContextProvider = (props) => {
   const defaultChartState = {
