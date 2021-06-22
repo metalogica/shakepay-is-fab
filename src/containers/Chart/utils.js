@@ -1,7 +1,8 @@
+/* eslint-disable no-debugger */
 import axios from 'axios';
 import moment from 'moment';
 
-export const getNetworthSeries = async () => {
+export const getNetworthSeries = async (options={}) => {
   // forward requests via node proxy to solve CORS issue
   const baseUrl = "https://shakepay-is-fab-backend.herokuapp.com";
   

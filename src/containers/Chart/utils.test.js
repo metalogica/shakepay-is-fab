@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import { 
   ratesStub, 
   historicalRatesCADtoETH,  
@@ -10,18 +11,16 @@ import {
   getFxRateByDate 
 } from './utils';
 
-xdescribe('getNetworthSeries(', () => {
-  it('should return the correct shape', () => {
+describe('getNetworthSeries(startDate: String, endDate: String)', () => {
+  it('should return the correct shape', async () => {
     const stub = {
       labels: ['d1', 'd2', 'd3'],
       datasets: [{ values: [43, 55, 66, 80, 77]}]
     };
 
-    expect(
-      Object.keys(stub)
-    ).toEqual(
-      Object.keys(getNetworthSeries)
-    );
+    const response = await getNetworthSeries();
+
+    expect(Object.keys(response)).toEqual(Object.keys(stub));
   });
 
   it('should allow a customer to filter date range', () => {
@@ -72,7 +71,7 @@ xdescribe('transactionsOccuredOnSameDay(tx1, tx2)', () => {
   });
 });
 
-describe('getFxRateByDate()', () => {
+xdescribe('getFxRateByDate()', () => {
   it('should return the historical fxRate for BTC_CAD', () => {
     const rate = getFxRateByDate({
       txDate: "2018-03-16T18:30:59.575Z", 
