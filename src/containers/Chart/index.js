@@ -12,9 +12,9 @@ function ChartWrapper() {
   const prevState = usePrevious(state) || {};
   const dateChange = (prevState.startDate !== startDate || prevState.endDate !== endDate);
   const initialLoad = ((startDate === '' && endDate === '') && !data);
-  console.log(prevState, state);
-  console.log('date change: ', dateChange, 'initialLoad: ', initialLoad);
-  console.log('shoudl re-render: ', (dateChange || initialLoad));
+  // console.log(prevState, state);
+  // console.log('date change: ', dateChange, 'initialLoad: ', initialLoad);
+  // console.log('shoudl re-render: ', (dateChange || initialLoad));
   
   (dateChange || initialLoad) && getNetworthSeries(startDate, endDate)
     .then(response =>  setState({...state, data: response}))
