@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ReactFrappeChart from "react-frappe-charts";
+import ReactFrappeChart from 'react-frappe-charts';
 import { getNetworthSeries } from './utils';
 
 function ChartWrapper() {  
@@ -7,7 +7,7 @@ function ChartWrapper() {
   const [ error, setError ] = useState(false);
   
   !data && getNetworthSeries()
-    .then(response => { 
+    .then(response =>  { 
       setData(response); 
     })
     .catch(error => setError(true));

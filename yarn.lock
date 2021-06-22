@@ -9342,6 +9342,11 @@ react-frappe-charts@^4.0.0:
   resolved "https://registry.yarnpkg.com/react-frappe-charts/-/react-frappe-charts-4.0.0.tgz#5a9958641ac0e74ce4c44a23788a5e879ac716a7"
   integrity sha512-QmYY1ExlPidE8DK3jtjGWakP0YptHOlFMoYF4/Qxsbrw5hYMCwocPoco4b3e2qk6mI0trdpzILzpjmFWutO/MA==
 
+react-hook-form@^7.9.0:
+  version "7.9.0"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.9.0.tgz#0b5ed2f262a1e3cc64cfcf855f09a6e236d46ac3"
+  integrity sha512-1SazsTvsC5A4jLxc8fIf0bB92kEp4MGjP69k8s+2nI1spHPha5UkLwaebOXhO9vY95aGqcyBU67pRiv+6T5KZQ==
+
 react-hot-loader@^4.13.0:
   version "4.13.0"
   resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.13.0.tgz#c27e9408581c2a678f5316e69c061b226dc6a202"
