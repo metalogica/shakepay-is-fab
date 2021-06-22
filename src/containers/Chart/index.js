@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import ReactFrappeChart from 'react-frappe-charts';
 import { getNetworthSeries } from './utils';
+import { ChartContext } from '../../contexts/ChartContext';
 
 function ChartWrapper() {  
+  const [ state ] = useContext(ChartContext);
+  console.log(state);
   const [ data, setData ] = useState(false);
   const [ error, setError ] = useState(false);
   

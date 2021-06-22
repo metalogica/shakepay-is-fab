@@ -2,7 +2,7 @@
 import axios from 'axios';
 import moment from 'moment';
 
-export const getNetworthSeries = async (options={}) => {
+export const getNetworthSeries = async (startDate='', endDate='') => {
   // forward requests via node proxy to solve CORS issue
   const baseUrl = "https://shakepay-is-fab-backend.herokuapp.com";
   
@@ -29,6 +29,18 @@ export const getNetworthSeries = async (options={}) => {
   const labels = [];
   const datasets = [ { values: [] } ];
 
+  // get subsection of tx data based on startDate and endDate; if not provided, then collect all txData
+  const startDateAndEndDateSpecifiedByUser = !(startDate === '' && endDate === '');
+  if (startDateAndEndDateSpecifiedByUser) {
+    startDate = moment(startDate); 
+    endDate = moment(endDate); 
+
+    txHistory.data = txHistory.data.filter(tx => { 
+      const txDate = moment(tx.createdAt);
+      return txDate >= startDate && txDate <= endDate;
+    });
+  }
+
   // loop through txHistory and calculate net-worth
   let netWorth = 0.0;
   // api returns latest transactions first
@@ -46,14 +58,16 @@ export const getNetworthSeries = async (options={}) => {
       let previousTx = txHistory.data[index-1];
       if (!transactionsOccuredOnSameDay(previousTx, tx)) {
         // build X values for chart
-        const date = moment(tx.createdAt).format('L');
+        const date = moment(tx.createdAt).format('yyyy-MM-DD');
         labels.push(date);
-  
+        
         // build y Values for chart
         const roundedNetWorthInCad = netWorth.toFixed(2);
         datasets[0].values.push(roundedNetWorthInCad);
       }
+      // console.log(labels);
     }
+    // console.log(txHistory.data.map(tx=>tx.createdAt));
   });
 
   return {

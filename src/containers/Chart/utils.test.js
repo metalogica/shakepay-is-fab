@@ -12,7 +12,7 @@ import {
 } from './utils';
 
 describe('getNetworthSeries(startDate: String, endDate: String)', () => {
-  it('should return the correct shape', async () => {
+  xit('should return the correct shape', async () => {
     const stub = {
       labels: ['d1', 'd2', 'd3'],
       datasets: [{ values: [43, 55, 66, 80, 77]}]
@@ -23,7 +23,17 @@ describe('getNetworthSeries(startDate: String, endDate: String)', () => {
     expect(Object.keys(response)).toEqual(Object.keys(stub));
   });
 
-  it('should allow a customer to filter date range', () => {
+  
+  it('should allow a customer to filter date range', async () => {
+    // pass start and dend date string into getNetWorthSeries
+    const response = await getNetworthSeries('2018-01-17', '2018-04-02');
+    const startDate = response.labels[0];
+    const endDate = response.labels[response.labels.length-1];
+
+    // check that the first value in returned value is the same date as expected first date
+    // check that the last value in returned value is the same date as expected end date
+    expect(startDate).toEqual('2018-01-17');
+    expect(endDate).toEqual('2018-03-29');    
   });
 });
 

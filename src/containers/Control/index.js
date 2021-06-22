@@ -10,8 +10,8 @@ function Control(props) {
   // debugger;//eslint-disable-line
 
   const onSubmit = (data) => { 
-    setState({...state});
-    console.log(state); 
+    const { startDate, endDate } = data;
+    setState({...state, startDate, endDate });
   };
 
   return (
