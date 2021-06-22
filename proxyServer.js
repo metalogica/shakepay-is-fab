@@ -2,16 +2,26 @@
 // Used to eliminate CORS issues for client-facing app.
 const express = require('express');
 const request = require('request');
+const path = require('path');
+const fs = require('fs');
 
 const app = express();
+
+// Used for static bundling in serving content in Docker Container
+app.use('/static', express.static(path.resolve(__dirname, './build/static')));
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   next();
 });
 
+app.get('/', (req, res) => {
+  const reactAppPath = path.resolve(__dirname, './build/index.html');
+  const reactApp = fs.readFileSync(reactAppPath, 'utf-8');
+  res.send(reactApp);
+});
+
 app.get('/api/rates', (req, res) => {
-  debugger; 
   request(
     { url: 'https://api.shakepay.co/rates' },
     (error, response, body) => {
@@ -63,5 +73,5 @@ app.get('/api/historical_rates_ETH', (req, res) => {
   );
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`listening on ${PORT}`));

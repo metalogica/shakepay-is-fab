@@ -26,6 +26,7 @@
     "frontend:deploy": "netlify deploy -d build --prod",
     "frontend:test": "react-scripts test",
     "frontend:eject": "react-scripts eject",
+    "start": "node ./proxyServer.js",
     "lint": "eslint . --fix"
   },
   "eslintConfig": {
